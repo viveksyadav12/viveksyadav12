@@ -224,6 +224,24 @@ mesh_data = heart_mesh.export_for_fem()
 # ... (see example_heart_fem.py for complete code)
 ```
 
+### 2D Laplace/Poisson FEM Solver (MATLAB)
+
+A MATLAB implementation of a 2D Laplace/Poisson equation solver using the Finite Element Method with linear triangular elements.
+
+**Key Features:**
+- Structured triangular mesh generation
+- Linear triangular finite elements
+- Sparse matrix assembly for efficiency
+- Dirichlet boundary condition enforcement
+- Visualization tools (surface and contour plots)
+
+See [LAPLACE2D_FEM_README.md](LAPLACE2D_FEM_README.md) for full documentation.
+
+**Quick Start:**
+```matlab
+quickstart
+```
+
 -
 
 <!---
