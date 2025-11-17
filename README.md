@@ -78,7 +78,76 @@ mesh.smooth_mesh_laplacian(iterations=10)
 stats = mesh.get_mesh_statistics()
 print(f"Quality: {stats['quality_mean']:.3f}")
 ```
-- 
+
+### 1D HOMES: High-Order Mesh Adaptation
+
+A complete implementation of the HOMES (High-Order MOESS) algorithm for adaptive mesh optimization based on error sampling and synthesis. This implements the algorithm from "Error Sampling and Synthesis for High-Order Node Movement" (Sanjaya et al., AIAA 2025-0780).
+
+**Key Features:**
+- **Arbitrary Polynomial Order**: Support for P1, P2, P3, P4+ elements
+- **Metric-Based Adaptation**: Riemannian metric fields guide optimization
+- **r-Adaptation**: Vertex position optimization for optimal mesh spacing
+- **q-Adaptation**: High-order geometry node optimization for element curvature
+- **Error Sampling & Synthesis**: A posteriori error estimation via random sampling
+- **Hessian-Based Metrics**: Automatic metric construction from solution features
+
+**Adaptation Strategies:**
+- r-only: Optimize vertex positions (changes topology)
+- q-only: Optimize high-order nodes (preserves topology)
+- Combined r+q: Alternating or simultaneous optimization
+
+See [MESH_ADAPTATION_README.md](MESH_ADAPTATION_README.md) for full documentation.
+
+**Quick Start:**
+```bash
+# Run quick verification tests
+python test_mesh_adaptation.py
+
+# Run comprehensive examples
+python example_adaptation_1d.py
+```
+
+**Example - Basic Adaptation:**
+```python
+from mesh_adaptation_1d import (
+    HighOrderMesh1D, RiemannianMetricField1D,
+    ErrorModel1D, MeshOptimizer1D
+)
+import numpy as np
+
+# Create initial mesh (quadratic elements)
+vertices = np.linspace(0, 1, 11)
+mesh = HighOrderMesh1D(vertices, order=2)
+
+# Define target metric (fine spacing near x=0.5)
+metric = RiemannianMetricField1D(
+    lambda x: 0.02 + 0.1 * abs(x - 0.5)
+)
+
+# Adapt mesh
+error_model = ErrorModel1D(n_samples=20)
+optimizer = MeshOptimizer1D(mesh, metric, error_model)
+optimizer.adapt(n_iterations=20, alternate=True)
+
+# Access optimized mesh
+adapted_mesh = optimizer.mesh
+```
+
+**Example - Hessian-Based Adaptation:**
+```python
+# Adapt to solution features
+def solution(x):
+    return np.sin(2*np.pi*x) + 0.1*np.sin(20*np.pi*x)
+
+# Construct metric from Hessian
+metric = RiemannianMetricField1D.from_solution_hessian(
+    solution, complexity=2.0, domain=(0, 1)
+)
+
+# Adapt as before...
+```
+
+-
 
 <!---
 viveksyadav12/viveksyadav12 is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
