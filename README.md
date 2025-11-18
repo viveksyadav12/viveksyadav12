@@ -147,6 +147,83 @@ metric = RiemannianMetricField1D.from_solution_hessian(
 # Adapt as before...
 ```
 
+### Heart Mesh FEM - Cardiac Electrophysiology
+
+A comprehensive implementation for generating anatomically-inspired heart meshes and simulating cardiac electrophysiology using Finite Element Methods. This project enables realistic simulations of electrical wave propagation in the heart.
+
+**Key Features:**
+- **Anatomical Heart Geometries**: Left ventricle, right ventricle, biventricular meshes
+- **Cardiac FEM Solver**: Monodomain equation with anisotropic diffusion
+- **Ionic Models**: Aliev-Panfilov, FitzHugh-Nagumo cardiac action potential models
+- **Fiber Orientations**: Transmural fiber rotation for realistic conduction
+- **Stimulus Protocols**: Point stimulation, regional pacing, periodic pacing
+- **Advanced Simulations**: Action potential propagation, activation maps, reentrant waves
+
+**Applications:**
+- Cardiac arrhythmia research
+- Pacing strategy optimization
+- Wave propagation studies
+- Educational demonstrations
+
+See [HEART_MESH_FEM_README.md](HEART_MESH_FEM_README.md) for full documentation.
+
+**Quick Start:**
+```bash
+# Test heart mesh generator
+python heart_mesh_generator.py
+
+# Run cardiac electrophysiology examples
+python example_heart_fem.py lv        # LV propagation
+python example_heart_fem.py biv       # Biventricular pacing
+python example_heart_fem.py reentry   # Spiral waves
+python example_heart_fem.py           # All examples
+```
+
+**Example - LV Action Potential:**
+```python
+from heart_mesh_generator import create_simple_lv_mesh
+from cardiac_fem_solver import (
+    CardiacFEMSolver, AlievPanfilovModel, StimulusProtocol
+)
+
+# Create heart mesh
+heart_mesh = create_simple_lv_mesh(n_radial=10, n_angular=30)
+mesh_data = heart_mesh.export_for_fem()
+
+# Set up solver
+solver = CardiacFEMSolver(
+    mesh_data['nodes'],
+    mesh_data['elements'],
+    fiber_field=mesh_data['fibers'],
+    ionic_model=AlievPanfilovModel()
+)
+
+# Define apex stimulus
+stimulus = StimulusProtocol.point_stimulus(
+    center=(0.0, -1.0), radius=0.5,
+    amplitude=50.0, duration=2.0
+)
+
+# Simulate electrical propagation
+times, solutions = solver.solve(
+    T=50.0, dt=0.05,
+    stimulus_func=stimulus,
+    save_interval=10
+)
+```
+
+**Example - Biventricular Pacing:**
+```python
+from heart_mesh_generator import create_biventricular_mesh
+
+# Create biventricular mesh
+heart_mesh = create_biventricular_mesh()
+mesh_data = heart_mesh.export_for_fem()
+
+# Dual-site pacing simulation
+# ... (see example_heart_fem.py for complete code)
+```
+
 -
 
 <!---
