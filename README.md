@@ -1,9 +1,6 @@
 - Hi, I am Vivek Singh Yadav, currently working as a Postdoctoral Research Associate
 - I'm interested in numerical methods and scientific computing
-- I'm currently learning cuda programming and machine learning to simulate PDEs
-- I'm looking to collaborate on numerical methods
-- You can reach me at my Email
-- Pronouns: He
+- I'm currently working on metric-based mesh generation and mesh smoothing algorithms
 
 ## Featured Projects
 
