@@ -1,5 +1,5 @@
 - Hi, I am Vivek Singh Yadav, currently working as a Postdoctoral Research Associate
-- I'm interested in numerical methods and scientific computing
+- I'm interested in numerical methods and scientific computing for biomedical engineering problems, such as Cancer models and Cardiovascular flows
 - I'm currently working on metric-based mesh generation and mesh smoothing algorithms
 
 ## Featured Projects
